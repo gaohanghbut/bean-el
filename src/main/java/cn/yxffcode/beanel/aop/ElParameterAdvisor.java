@@ -46,7 +46,7 @@ public class ElParameterAdvisor extends AbstractPointcutAdvisor {
         return false;
     }
 
-    public static final class ElParameterAdvisorPointcut implements Pointcut {
+    private static final class ElParameterAdvisorPointcut implements Pointcut {
 
         @Override public ClassFilter getClassFilter() {
             return new ClassFilter() {
@@ -97,7 +97,7 @@ public class ElParameterAdvisor extends AbstractPointcutAdvisor {
         }
     }
 
-    public static final class ElParameterAdvisorAdvice implements MethodInterceptor {
+    private static final class ElParameterAdvisorAdvice implements MethodInterceptor {
         private final ElBeanProcessor elBeanProcessor;
 
         public ElParameterAdvisorAdvice(final ElBeanProcessor elBeanProcessor) {
