@@ -21,6 +21,8 @@ import java.lang.reflect.Method;
 public class ElParameterAdvisor extends AbstractPointcutAdvisor {
 
     private final ElBeanProcessor elBeanProcessor;
+    private ElParameterAdvisorPointcut elParameterAdvisorPointcut;
+    private ElParameterAdvisorAdvice elParameterAdvisorAdvice;
 
     public ElParameterAdvisor() {
         this(new SpringElBeanProcessor());
@@ -28,14 +30,16 @@ public class ElParameterAdvisor extends AbstractPointcutAdvisor {
 
     public ElParameterAdvisor(final ElBeanProcessor elBeanProcessor) {
         this.elBeanProcessor = elBeanProcessor;
+        this.elParameterAdvisorAdvice = new ElParameterAdvisorAdvice(elBeanProcessor);
+        this.elParameterAdvisorPointcut = new ElParameterAdvisorPointcut();
     }
 
     @Override public Pointcut getPointcut() {
-        return new ElParameterAdvisorPointcut();
+        return elParameterAdvisorPointcut;
     }
 
     @Override public Advice getAdvice() {
-        return new ElParameterAdvisorAdvice(elBeanProcessor);
+        return elParameterAdvisorAdvice;
     }
 
     @Override public boolean isPerInstance() {
