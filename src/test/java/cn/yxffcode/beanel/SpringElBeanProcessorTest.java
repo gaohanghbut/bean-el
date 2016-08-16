@@ -1,6 +1,9 @@
 package cn.yxffcode.beanel;
 
+import cn.yxffcode.beanel.aop.ElParameterAdvisor;
+import cn.yxffcode.beanel.test.ITestDao;
 import org.junit.Test;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 
 /**
@@ -11,54 +14,19 @@ public class SpringElBeanProcessorTest {
     @Test
     public void testProcess() throws Exception {
         final SpringElBeanProcessor elBeanProcessor = new SpringElBeanProcessor(new SpelExpressionParser());
-        final User user = new User();
+        final cn.yxffcode.beanel.test.Test user = new cn.yxffcode.beanel.test.Test();
         elBeanProcessor.process(user);
         System.out.println(user);
     }
 
-    @ElBean
-    public static final class User {
-
-        @ElValue("2 + 2")
-        private int userId;
-
-        @ElValue("'123'")
-        private String password;
-
-        @ElValue("1 == 1")
-        private boolean nativeUser;
-
-        public int getUserId() {
-            return userId;
-        }
-
-        public void setUserId(final int userId) {
-            this.userId = userId;
-        }
-
-        public String getPassword() {
-            return password;
-        }
-
-        public void setPassword(final String password) {
-            this.password = password;
-        }
-
-        public boolean isNativeUser() {
-            return nativeUser;
-        }
-
-        public void setNativeUser(final boolean nativeUser) {
-            this.nativeUser = nativeUser;
-        }
-
-        @Override public String toString() {
-            final StringBuilder sb = new StringBuilder("User{");
-            sb.append("userId=").append(userId);
-            sb.append(", password='").append(password).append('\'');
-            sb.append(", nativeUser=").append(nativeUser);
-            sb.append('}');
-            return sb.toString();
-        }
+    @Test
+    public void testSpringAop() throws Exception {
+        final ClassPathXmlApplicationContext ctx =
+                new ClassPathXmlApplicationContext("spring.xml");
+        final ElParameterAdvisor elParameterAdvisor = ctx.getBean(ElParameterAdvisor.class);
+        System.out.println(elParameterAdvisor);
+        final ITestDao ITestDao = ctx.getBean(ITestDao.class);
+        ITestDao.save(new cn.yxffcode.beanel.test.Test());
     }
+
 }

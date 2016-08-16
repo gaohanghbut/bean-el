@@ -2,6 +2,7 @@ package cn.yxffcode.beanel;
 
 import org.springframework.expression.Expression;
 import org.springframework.expression.ExpressionParser;
+import org.springframework.expression.spel.standard.SpelExpressionParser;
 
 import java.lang.reflect.Field;
 
@@ -12,6 +13,10 @@ public class SpringElBeanProcessor implements ElBeanProcessor {
 
     private final ExpressionParser expressionParser;
 
+    public SpringElBeanProcessor() {
+        this(new SpelExpressionParser());
+    }
+
     public SpringElBeanProcessor(final ExpressionParser expressionParser) {
         this.expressionParser = expressionParser;
     }
@@ -21,10 +26,6 @@ public class SpringElBeanProcessor implements ElBeanProcessor {
             return;
         }
         Class<?> type = obj.getClass();
-        final ElBean elBean = type.getAnnotation(ElBean.class);
-        if (elBean == null) {
-            return;
-        }
         try {
             while (type != Object.class) {
                 final Field[] declaredFields = type.getDeclaredFields();
