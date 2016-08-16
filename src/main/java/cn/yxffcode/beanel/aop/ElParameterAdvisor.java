@@ -48,18 +48,37 @@ public class ElParameterAdvisor extends AbstractPointcutAdvisor {
 
     private static final class ElParameterAdvisorPointcut implements Pointcut {
 
-        @Override public ClassFilter getClassFilter() {
-            return new ClassFilter() {
-                @Override public boolean matches(final Class<?> clazz) {
-                    final Method[] methods = clazz.getMethods();
-                    for (Method method : methods) {
-                        if (matchMethod(method)) {
-                            return true;
-                        }
+        private ClassFilter classFilter = new ClassFilter() {
+            @Override public boolean matches(final Class<?> clazz) {
+                final Method[] methods = clazz.getMethods();
+                for (Method method : methods) {
+                    if (matchMethod(method)) {
+                        return true;
                     }
-                    return false;
                 }
-            };
+                return false;
+            }
+        };
+        private MethodMatcher methodMatcher = new MethodMatcher() {
+            @Override public boolean matches(final Method method, final Class<?> targetClass) {
+                return matchMethod(method);
+            }
+
+            @Override public boolean isRuntime() {
+                return false;
+            }
+
+            @Override public boolean matches(final Method method, final Class<?> targetClass, final Object[] args) {
+                return matches(method, targetClass);
+            }
+        };
+
+        @Override public ClassFilter getClassFilter() {
+            return classFilter;
+        }
+
+        @Override public MethodMatcher getMethodMatcher() {
+            return methodMatcher;
         }
 
         private boolean matchMethod(final Method method) {
@@ -78,22 +97,6 @@ public class ElParameterAdvisor extends AbstractPointcutAdvisor {
                 }
             }
             return false;
-        }
-
-        @Override public MethodMatcher getMethodMatcher() {
-            return new MethodMatcher() {
-                @Override public boolean matches(final Method method, final Class<?> targetClass) {
-                    return matchMethod(method);
-                }
-
-                @Override public boolean isRuntime() {
-                    return false;
-                }
-
-                @Override public boolean matches(final Method method, final Class<?> targetClass, final Object[] args) {
-                    return matches(method, targetClass);
-                }
-            };
         }
     }
 
