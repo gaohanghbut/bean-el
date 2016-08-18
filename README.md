@@ -2,6 +2,8 @@
 基于Spring EL表达式给bean的属性赋值
 
 # Example
+
+在需要被EL赋值的属性上打@ElValue注解,指定EL表达式
 ```java
 
 public class User {
