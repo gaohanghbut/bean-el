@@ -5,7 +5,7 @@ import cn.yxffcode.beanel.ElValue;
 /**
  * @author gaohang on 16/8/16.
  */
-public class Test {
+public class User {
 
     @ElValue("2 + 2")
     private int userId;
@@ -41,7 +41,7 @@ public class Test {
     }
 
     @Override public String toString() {
-        final StringBuilder sb = new StringBuilder("Test{");
+        final StringBuilder sb = new StringBuilder("User{");
         sb.append("userId=").append(userId);
         sb.append(", password='").append(password).append('\'');
         sb.append(", nativeUser=").append(nativeUser);
