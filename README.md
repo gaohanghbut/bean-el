@@ -1,5 +1,5 @@
 # bean-el
-基于Spring EL表达式给bean的属性赋值
+基于Spring EL表达式给bean的属性赋默认值,如果属性已有值,则不会被EL重新赋值
 
 # Example
 
